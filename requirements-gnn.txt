@@ -1,0 +1,5 @@
+# Install this after the main requirements when you are ready for the advanced GNN layer.
+# PyTorch / PyTorch Geometric support depends on Python version and platform.
+
+torch>=2.3,<3.0
+torch-geometric>=2.5,<3.0

@@ -1,0 +1,93 @@
+{
+  "dataset_name": "ieee_cis_full_train",
+  "dataset_role": "core knowledge base for model training and feature engineering",
+  "rows": 590540,
+  "columns": 434,
+  "label_column": "isFraud",
+  "label_rate": 0.03499000914417313,
+  "numeric_columns": 403,
+  "categorical_columns": 31,
+  "top_missing_columns": [
+    {
+      "column": "id_24",
+      "missing_ratio": 0.992
+    },
+    {
+      "column": "id_25",
+      "missing_ratio": 0.9913
+    },
+    {
+      "column": "id_07",
+      "missing_ratio": 0.9913
+    },
+    {
+      "column": "id_08",
+      "missing_ratio": 0.9913
+    },
+    {
+      "column": "id_21",
+      "missing_ratio": 0.9913
+    },
+    {
+      "column": "id_26",
+      "missing_ratio": 0.9913
+    },
+    {
+      "column": "id_27",
+      "missing_ratio": 0.9912
+    },
+    {
+      "column": "id_23",
+      "missing_ratio": 0.9912
+    },
+    {
+      "column": "id_22",
+      "missing_ratio": 0.9912
+    },
+    {
+      "column": "dist2",
+      "missing_ratio": 0.9363
+    },
+    {
+      "column": "D7",
+      "missing_ratio": 0.9341
+    },
+    {
+      "column": "id_18",
+      "missing_ratio": 0.9236
+    },
+    {
+      "column": "D13",
+      "missing_ratio": 0.8951
+    },
+    {
+      "column": "D14",
+      "missing_ratio": 0.8947
+    },
+    {
+      "column": "D12",
+      "missing_ratio": 0.8904
+    },
+    {
+      "column": "id_04",
+      "missing_ratio": 0.8877
+    },
+    {
+      "column": "id_03",
+      "missing_ratio": 0.8877
+    },
+    {
+      "column": "D6",
+      "missing_ratio": 0.8761
+    },
+    {
+      "column": "id_33",
+      "missing_ratio": 0.8759
+    },
+    {
+      "column": "id_09",
+      "missing_ratio": 0.8731
+    }
+  ],
+  "sample_size": 0
+}

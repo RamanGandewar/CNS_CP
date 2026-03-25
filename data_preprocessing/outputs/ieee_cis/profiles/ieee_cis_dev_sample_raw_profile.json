@@ -1,0 +1,93 @@
+{
+  "dataset_name": "ieee_cis_dev_sample",
+  "dataset_role": "fast end-to-end pipeline development and debugging",
+  "rows": 10000,
+  "columns": 434,
+  "label_column": "isFraud",
+  "label_rate": 0.0351,
+  "numeric_columns": 403,
+  "categorical_columns": 31,
+  "top_missing_columns": [
+    {
+      "column": "id_24",
+      "missing_ratio": 0.9918
+    },
+    {
+      "column": "id_07",
+      "missing_ratio": 0.9912
+    },
+    {
+      "column": "id_08",
+      "missing_ratio": 0.9912
+    },
+    {
+      "column": "id_21",
+      "missing_ratio": 0.9911
+    },
+    {
+      "column": "id_23",
+      "missing_ratio": 0.9911
+    },
+    {
+      "column": "id_22",
+      "missing_ratio": 0.9911
+    },
+    {
+      "column": "id_25",
+      "missing_ratio": 0.9911
+    },
+    {
+      "column": "id_26",
+      "missing_ratio": 0.9911
+    },
+    {
+      "column": "id_27",
+      "missing_ratio": 0.9911
+    },
+    {
+      "column": "dist2",
+      "missing_ratio": 0.9381
+    },
+    {
+      "column": "D7",
+      "missing_ratio": 0.9345
+    },
+    {
+      "column": "id_18",
+      "missing_ratio": 0.9206
+    },
+    {
+      "column": "D13",
+      "missing_ratio": 0.8944
+    },
+    {
+      "column": "D14",
+      "missing_ratio": 0.8923
+    },
+    {
+      "column": "id_04",
+      "missing_ratio": 0.8914
+    },
+    {
+      "column": "id_03",
+      "missing_ratio": 0.8914
+    },
+    {
+      "column": "D12",
+      "missing_ratio": 0.8873
+    },
+    {
+      "column": "id_10",
+      "missing_ratio": 0.8757
+    },
+    {
+      "column": "D9",
+      "missing_ratio": 0.8757
+    },
+    {
+      "column": "D8",
+      "missing_ratio": 0.8757
+    }
+  ],
+  "sample_size": 10000
+}

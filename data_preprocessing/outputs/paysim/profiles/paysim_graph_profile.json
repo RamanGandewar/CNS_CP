@@ -1,0 +1,83 @@
+{
+  "dataset_name": "paysim_graph",
+  "dataset_role": "graph-based fraud detection and relationship analysis",
+  "rows": 50000,
+  "columns": 17,
+  "label_column": "isFraud",
+  "label_rate": 0.0014,
+  "numeric_columns": 13,
+  "categorical_columns": 4,
+  "top_missing_columns": [
+    {
+      "column": "step",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "type",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "amount",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "nameOrig",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "oldbalanceOrg",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "newbalanceOrig",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "nameDest",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "oldbalanceDest",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "newbalanceDest",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "isFraud",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "isFlaggedFraud",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "log_amount",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "origin_balance_delta",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "destination_balance_delta",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "is_cashout",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "is_transfer",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "account_pair",
+      "missing_ratio": 0.0
+    }
+  ],
+  "sample_size": 50000,
+  "node_count": 98083,
+  "edge_count": 50000
+}

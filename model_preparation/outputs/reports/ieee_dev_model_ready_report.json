@@ -1,0 +1,42 @@
+{
+  "source_path": "data_preprocessing\\outputs\\ieee_cis\\processed\\ieee_cis_dev_sample_processed.csv",
+  "train_rows": 8000,
+  "validation_rows": 2000,
+  "feature_count": 368,
+  "numeric_feature_count": 342,
+  "categorical_feature_count": 26,
+  "target_column": "isFraud",
+  "train_fraud_rate": 0.035125,
+  "validation_fraud_rate": 0.035,
+  "rare_category_columns": 7,
+  "top_rare_category_columns": [
+    {
+      "column": "DeviceInfo",
+      "rare_value_count": 236
+    },
+    {
+      "column": "id_31",
+      "rare_value_count": 72
+    },
+    {
+      "column": "P_emaildomain",
+      "rare_value_count": 41
+    },
+    {
+      "column": "R_emaildomain",
+      "rare_value_count": 34
+    },
+    {
+      "column": "card4",
+      "rare_value_count": 1
+    },
+    {
+      "column": "card6",
+      "rare_value_count": 1
+    },
+    {
+      "column": "M1",
+      "rare_value_count": 1
+    }
+  ]
+}

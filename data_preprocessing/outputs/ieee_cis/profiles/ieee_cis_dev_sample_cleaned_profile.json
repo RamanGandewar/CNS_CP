@@ -1,0 +1,171 @@
+{
+  "dataset_name": "ieee_cis_dev_sample",
+  "dataset_role": "fast end-to-end pipeline development and debugging",
+  "rows": 10000,
+  "columns": 370,
+  "label_column": "isFraud",
+  "label_rate": 0.0351,
+  "numeric_columns": 344,
+  "categorical_columns": 26,
+  "top_missing_columns": [
+    {
+      "column": "TransactionID",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "isFraud",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "TransactionDT",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "TransactionAmt",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "ProductCD",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "card1",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "card2",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "card3",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "card4",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "card5",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "card6",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "addr1",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "addr2",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "dist1",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "P_emaildomain",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "R_emaildomain",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "C1",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "C2",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "C3",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "C4",
+      "missing_ratio": 0.0
+    }
+  ],
+  "sample_size": 10000,
+  "missing_threshold": 0.85,
+  "dropped_column_count": 74,
+  "dropped_columns": [
+    "dist2",
+    "D6",
+    "D7",
+    "D8",
+    "D9",
+    "D12",
+    "D13",
+    "D14",
+    "V138",
+    "V139",
+    "V140",
+    "V141",
+    "V142",
+    "V143",
+    "V144",
+    "V145",
+    "V146",
+    "V147",
+    "V148",
+    "V149",
+    "V150",
+    "V151",
+    "V152",
+    "V153",
+    "V154",
+    "V155",
+    "V156",
+    "V157",
+    "V158",
+    "V159",
+    "V160",
+    "V161",
+    "V162",
+    "V163",
+    "V164",
+    "V165",
+    "V166",
+    "V322",
+    "V323",
+    "V324",
+    "V325",
+    "V326",
+    "V327",
+    "V328",
+    "V329",
+    "V330",
+    "V331",
+    "V332",
+    "V333",
+    "V334",
+    "V335",
+    "V336",
+    "V337",
+    "V338",
+    "V339",
+    "id_03",
+    "id_04",
+    "id_07",
+    "id_08",
+    "id_09",
+    "id_10",
+    "id_14",
+    "id_18",
+    "id_21",
+    "id_22",
+    "id_23",
+    "id_24",
+    "id_25",
+    "id_26",
+    "id_27",
+    "id_30",
+    "id_32",
+    "id_33",
+    "id_34"
+  ]
+}

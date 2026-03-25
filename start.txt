@@ -1,0 +1,10 @@
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+pip install -r requirements-gnn.txt
+
+python data_preprocessing/scripts/prepare_datasets.py --dataset ieee_full
+python data_preprocessing/scripts/prepare_datasets.py --dataset ieee_sample --sample-size 10000
+python data_preprocessing/scripts/prepare_datasets.py --dataset paysim_graph --sample-size 50000

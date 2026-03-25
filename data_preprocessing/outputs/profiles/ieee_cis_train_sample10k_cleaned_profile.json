@@ -1,0 +1,167 @@
+{
+  "rows": 10000,
+  "columns": 368,
+  "fraud_rate": 0.0351,
+  "numeric_columns": 342,
+  "categorical_columns": 26,
+  "top_missing_columns": [
+    {
+      "column": "id_28",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_20",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_19",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_17",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_16",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_15",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_13",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_12",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_11",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_06",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_05",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_02",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "id_01",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "V321",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "V320",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "V319",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "D2",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "D1",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "C14",
+      "missing_ratio": 0.0
+    },
+    {
+      "column": "C13",
+      "missing_ratio": 0.0
+    }
+  ],
+  "dropped_columns": [
+    "dist2",
+    "D6",
+    "D7",
+    "D8",
+    "D9",
+    "D12",
+    "D13",
+    "D14",
+    "V138",
+    "V139",
+    "V140",
+    "V141",
+    "V142",
+    "V143",
+    "V144",
+    "V145",
+    "V146",
+    "V147",
+    "V148",
+    "V149",
+    "V150",
+    "V151",
+    "V152",
+    "V153",
+    "V154",
+    "V155",
+    "V156",
+    "V157",
+    "V158",
+    "V159",
+    "V160",
+    "V161",
+    "V162",
+    "V163",
+    "V164",
+    "V165",
+    "V166",
+    "V322",
+    "V323",
+    "V324",
+    "V325",
+    "V326",
+    "V327",
+    "V328",
+    "V329",
+    "V330",
+    "V331",
+    "V332",
+    "V333",
+    "V334",
+    "V335",
+    "V336",
+    "V337",
+    "V338",
+    "V339",
+    "id_03",
+    "id_04",
+    "id_07",
+    "id_08",
+    "id_09",
+    "id_10",
+    "id_14",
+    "id_18",
+    "id_21",
+    "id_22",
+    "id_23",
+    "id_24",
+    "id_25",
+    "id_26",
+    "id_27",
+    "id_30",
+    "id_32",
+    "id_33",
+    "id_34"
+  ],
+  "dropped_column_count": 74,
+  "missing_threshold": 0.85
+}
