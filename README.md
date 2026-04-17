@@ -5,6 +5,8 @@
 This project is a real-time, scalable fraud detection system designed to identify fraudulent transactions using a combination of:
 
 - Machine Learning
+- Graph-Based Fraud Detection
+- Anomaly Detection
 - Rule-Based Detection
 - Feature Engineering
 - API Deployment
@@ -21,23 +23,30 @@ Unlike traditional systems, this solution goes beyond simple classification and 
 - Reduce false positives
 - Provide explainable predictions
 - Build a scalable and modular system
+- Detect fraud networks and suspicious clusters via graph intelligence
 
 ---
 
 ## 🏗️ System Architecture
 
 ```
-Raw Transaction Input
-        ↓
+Raw Transaction
+      ↓
 Feature Builder
-        ↓
-ML Model (XGBoost)
-        ↓
-Risk Engine (Rules + ML)
-        ↓
+      ↓
+ML Model (XGBoost + Graph Features)
+      ↓
+Anomaly Detection (Isolation Forest)
+      ↓
+Graph Engine (SQLite + NetworkX)
+      ↓
+Cluster Detection
+      ↓
+Risk Engine (Hybrid Scoring)
+      ↓
 FastAPI Backend
-        ↓
-Response (Score + Explanation)
+      ↓
+React Dashboard (D3 Visualization)
 ```
 
 ---
@@ -57,17 +66,32 @@ CP/
 │
 ├── model_training/
 │   ├── train_model.py
+│   ├── train_model_with_graph.py       🔥 NEW
+│   ├── train_anomaly.py                🔥 NEW
 │   └── artifacts/
 │       ├── fraud_model.pkl
+│       ├── fraud_model_with_graph.pkl  🔥 NEW
+│       ├── anomaly_model.pkl           🔥 NEW
 │       └── metrics.json
 │
 ├── model_inference/
 │   ├── predictor.py
 │   ├── feature_builder.py
-│   └── risk_engine.py
+│   ├── risk_engine.py
+│   ├── graph_engine.py                 🔥 NEW
+│   ├── graph_store.py                  🔥 NEW (SQLite)
+│   ├── visualize_graph.py              🔥 NEW
+│   └── graph.db                        🔥 NEW
 │
 ├── backend/
 │   └── main.py
+│
+├── frontend/                           🔥 NEW
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── App.jsx
+│   └── package.json
 │
 └── README.md
 ```
@@ -82,7 +106,16 @@ CP/
 
 ### 🔹 Machine Learning
 - XGBoost
+- Isolation Forest *(NEW)*
 - scikit-learn
+
+### 🔹 Graph Processing
+- NetworkX *(NEW)*
+- SQLite — persistent graph storage *(NEW)*
+
+### 🔹 Frontend
+- React (Vite) *(NEW)*
+- D3.js *(NEW)*
 
 ### 🔹 Data Processing
 - Pandas
@@ -113,13 +146,20 @@ Preprocessed into:
 
 ### 🔹 2. Model Training
 
-- **Model Used:** XGBoost Classifier
+- **Model Used:** XGBoost Classifier (with graph-aware features)
 - Handles class imbalance using `scale_pos_weight`
+- **Graph Features Added:**
+  - `user_degree`
+  - `device_degree`
+  - `user_embedding`
+  - `device_embedding`
 - **Evaluation Metrics:**
   - ROC-AUC
   - PR-AUC
 - **Output:**
   - `fraud_model.pkl`
+  - `fraud_model_with_graph.pkl`
+  - `anomaly_model.pkl`
   - `metrics.json`
 
 ### 🔹 3. Inference Layer
@@ -138,11 +178,41 @@ Implemented in `feature_builder.py`:
   - Feature engineering
   - Schema alignment
 
-### 🔹 5. Risk Scoring Engine *(Core Intelligence 🔥)*
+### 🔹 5. Graph Engine *(NEW 🔥)*
 
-Implemented in `risk_engine.py`. Combines:
-- ML probability
+Implemented in `graph_engine.py` + `graph_store.py`:
+- Persistent graph layer using **SQLite**
+- Tracks relationships: Users ↔ Devices
+- Detects:
+  - Shared devices across users
+  - Fraud clusters and rings
+  - Suspicious connectivity patterns
+- Generates lightweight graph embeddings:
+  - `user_embedding`
+  - `device_embedding`
+
+### 🔹 6. Anomaly Detection Layer *(NEW 🔥)*
+
+Implemented in `train_anomaly.py`:
+- Uses **Isolation Forest**
+- Detects unknown and novel fraud patterns
+- Fully integrated into the risk scoring pipeline
+
+### 🔹 7. Fraud Cluster Detection *(NEW 🔥)*
+
+- Uses graph connected components
+- Flags:
+  - Suspicious user groups
+  - Fraud rings
+
+### 🔹 8. Risk Scoring Engine *(Core Intelligence 🔥 — Upgraded)*
+
+Implemented in `risk_engine.py`. Now combines:
+- ML probability (XGBoost)
 - Rule-based logic
+- Anomaly score (Isolation Forest)
+- Graph features
+- Fraud cluster signals
 
 **Example Rules:**
 - High transaction amount
@@ -160,7 +230,7 @@ Implemented in `risk_engine.py`. Combines:
 }
 ```
 
-### 🔹 6. API Layer
+### 🔹 9. API Layer
 
 Built using **FastAPI**
 
@@ -188,6 +258,14 @@ Built using **FastAPI**
 }
 ```
 
+### 🔹 10. Frontend Dashboard *(NEW 🔥)*
+
+Built with **React (Vite) + D3.js**:
+- Full SaaS-style UI
+- Graph visualization of user-device relationships
+- Fraud insights and analytics
+- Real-time transaction monitoring
+
 ---
 
 ## 🚀 How to Run
@@ -200,10 +278,17 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-### 2️⃣ Train Model
+### 2️⃣ Train Models
 
 ```bash
+# Base model
 python model_training/train_model.py
+
+# Graph-aware model
+python model_training/train_model_with_graph.py
+
+# Anomaly detection model
+python model_training/train_anomaly.py
 ```
 
 ### 3️⃣ Run API
@@ -212,7 +297,15 @@ python model_training/train_model.py
 uvicorn backend.main:app --reload
 ```
 
-### 4️⃣ Open Swagger UI
+### 4️⃣ Run Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### 5️⃣ Open Swagger UI
 
 ```
 http://127.0.0.1:8000/docs
@@ -224,49 +317,62 @@ http://127.0.0.1:8000/docs
 
 | Feature | Description |
 |---|---|
-| ✅ Real-Time Prediction | API-based inference |
-| ✅ Explainable AI | Risk score + reasons |
-| ✅ Hybrid Detection | ML + Rule-based system |
-| ✅ Modular Architecture | Easy to extend |
-| ✅ Raw Input Handling | No need for full feature vector |
+| ✅ ML Detection | XGBoost with graph-aware features |
+| ✅ Anomaly Detection | Isolation Forest for unknown patterns |
+| ✅ Graph Intelligence | User-device relationship tracking |
+| ✅ Fraud Clusters | Detect suspicious groups and fraud rings |
+| ✅ Persistent Graph | SQLite-backed graph storage |
+| ✅ Explainable AI | Risk score + human-readable reasons |
+| ✅ Real-Time API | FastAPI-based inference pipeline |
+| ✅ Dashboard | React + D3 graph visualization |
 
 ---
 
 ## 🔥 Unique Selling Points (USP)
 
-### 🔹 1. Feature Builder Layer
-Bridges the gap between raw data and the ML model — no preprocessing required from the client.
+### 🔹 1. Graph-Based Fraud Detection
+Detects **fraud networks** instead of isolated transactions — identifies suspicious relationships between users, devices, and accounts.
 
-### 🔹 2. Risk Scoring Engine
-Not just a prediction — an **interpretable decision system** that explains *why* a transaction is flagged.
+### 🔹 2. Hybrid Intelligence System
+Combines four layers of detection:
+- Machine Learning (XGBoost)
+- Rule-based logic
+- Anomaly detection (Isolation Forest)
+- Graph analytics (NetworkX + SQLite)
 
-### 🔹 3. End-to-End Pipeline
-From data → model → API → output, fully integrated and production-ready.
+### 🔹 3. Explainable AI
+Provides **clear, human-readable reasons** for every prediction — not just a probability score.
+
+### 🔹 4. Real-Time API System
+Fast and scalable prediction pipeline built on FastAPI, ready for production integration.
+
+### 🔹 5. Full-Stack Implementation
+Backend + ML + Graph Engine + React Dashboard — a complete end-to-end system.
 
 ---
 
 ## ⚠️ Current Limitations
 
-- Feature engineering is simplified
-- No real-time streaming yet
-- Graph-based fraud detection not integrated yet
+- Graph is not yet distributed (local SQLite only)
+- No real-time streaming (Kafka planned)
+- Graph embeddings are basic (not full GNN yet)
 - No drift detection module *(planned)*
 
 ---
 
 ## 🚀 Future Enhancements
 
-- 🔹 Anomaly Detection (Isolation Forest)
-- 🔹 Graph-Based Fraud Detection (GNN)
-- 🔹 Kafka Streaming Integration
-- 🔹 Dashboard (Streamlit / React)
+- 🔹 Graph Neural Networks (PyTorch Geometric)
+- 🔹 Kafka real-time streaming pipeline
 - 🔹 Drift Detection System
+- 🔹 Advanced graph embeddings (Node2Vec)
+- 🔹 Production deployment (Docker + Cloud)
 
 ---
 
 ## 🎯 Final Summary
 
-> *"A real-time, explainable fraud detection system combining machine learning, rule-based intelligence, and feature engineering into a scalable API-driven architecture."*
+> *"A real-time, scalable, and explainable fraud detection system combining machine learning, anomaly detection, graph-based intelligence, and a modern React dashboard for end-to-end fraud monitoring."*
 
 ---
 

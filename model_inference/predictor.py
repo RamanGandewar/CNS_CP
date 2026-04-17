@@ -10,43 +10,46 @@ from model_inference.risk_engine import compute_risk
 # ==============================
 ROOT_DIR = Path(__file__).resolve().parents[1]
 
-MODEL_PATH = ROOT_DIR / "model_training" / "artifacts" / "fraud_model.pkl"
+MODEL_PATH = ROOT_DIR / "model_training" / "artifacts" / "fraud_model_with_graph.pkl"
+ANOMALY_MODEL_PATH = ROOT_DIR / "model_training" / "artifacts" / "anomaly_model.pkl"
 
 # ==============================
-# LOAD MODEL
+# LOAD MODELS
 # ==============================
-print("Loading model...")
+print("Loading models...")
 
 if not MODEL_PATH.exists():
-    raise FileNotFoundError(f"Model not found at {MODEL_PATH}")
+    raise FileNotFoundError(f"Fraud model not found at {MODEL_PATH}")
+
+if not ANOMALY_MODEL_PATH.exists():
+    raise FileNotFoundError(f"Anomaly model not found at {ANOMALY_MODEL_PATH}")
 
 model = joblib.load(MODEL_PATH)
+anomaly_model = joblib.load(ANOMALY_MODEL_PATH)
 
-print("Model loaded successfully!")
+print("Models loaded successfully!")
 
 
 # ==============================
 # PREDICT FUNCTION
 # ==============================
 def predict_transaction(transaction: dict):
-    """
-    Input: processed transaction (dict)
-    Output: fraud probability + risk score
-    """
 
-    # Convert to DataFrame
-    input_df = pd.DataFrame([transaction])
-
-    # ⚠️ IMPORTANT:
-    # Data is already processed → NO preprocessor
-    from model_inference.feature_builder import build_feature_vector
-
+    # Step 1: Build features
     processed_df = build_feature_vector(transaction)
     processed_input = processed_df.values
 
-    # Predict
+    # Step 2: ML prediction
     fraud_prob = float(model.predict_proba(processed_input)[0][1])
-    result = compute_risk(fraud_prob, transaction)
+
+    # Step 3: Anomaly detection
+    anomaly_raw = anomaly_model.decision_function(processed_input)[0]
+
+    # Normalize anomaly score
+    anomaly_score = float(1 - anomaly_raw)
+
+    # Step 4: Risk engine
+    result = compute_risk(fraud_prob, transaction, anomaly_score)
 
     return result
 
@@ -56,21 +59,13 @@ def predict_transaction(transaction: dict):
 # ==============================
 if __name__ == "__main__":
 
-    print("\nLoading sample data...")
-
-    DATA_PATH = ROOT_DIR / "model_preparation" / "outputs" / "datasets" / "ieee_dev_model_ready_validation.csv"
-
-    if not DATA_PATH.exists():
-        raise FileNotFoundError(f"Dataset not found at {DATA_PATH}")
-
-    df = pd.read_csv(DATA_PATH)
-
-    # Take one real processed row
-    sample_transaction = df.drop(columns=["isFraud"]).iloc[0].to_dict()
-
-    print("Running prediction...\n")
+    sample_transaction = {
+        "TransactionAmt": 5000,
+        "card1": 1234,
+        "device": "unknown"
+    }
 
     result = predict_transaction(sample_transaction)
 
-    print("Prediction Result:")
+    print("\nPrediction Result:")
     print(result)
