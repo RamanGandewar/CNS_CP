@@ -270,7 +270,7 @@ From data → model → API → output, fully integrated and production-ready.
 
 ---
 
-## 👨‍💻 Author
+## 👨‍💻 Authors
 
 **Raman Gandewar**
 **Divij Gujarathi**
