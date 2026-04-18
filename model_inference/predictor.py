@@ -2,7 +2,7 @@ import joblib
 import pandas as pd
 from pathlib import Path
 
-from model_inference.feature_builder import build_feature_vector
+from model_inference.feature_builder import align_features, build_feature_vector
 from model_inference.risk_engine import compute_risk
 
 # ==============================
@@ -27,6 +27,9 @@ if not ANOMALY_MODEL_PATH.exists():
 model = joblib.load(MODEL_PATH)
 anomaly_model = joblib.load(ANOMALY_MODEL_PATH)
 
+MODEL_FEATURE_NAMES = [str(column) for column in getattr(model, "feature_names_in_", [])]
+ANOMALY_FEATURE_NAMES = [str(column) for column in getattr(anomaly_model, "feature_names_in_", [])]
+
 print("Models loaded successfully!")
 
 
@@ -37,13 +40,24 @@ def predict_transaction(transaction: dict):
 
     # Step 1: Build features
     processed_df = build_feature_vector(transaction)
-    processed_input = processed_df.values
+    combined_features = processed_df.iloc[0].to_dict()
+
+    model_input = (
+        align_features(combined_features, MODEL_FEATURE_NAMES)
+        if MODEL_FEATURE_NAMES
+        else processed_df
+    )
+    anomaly_input = (
+        align_features(combined_features, ANOMALY_FEATURE_NAMES)
+        if ANOMALY_FEATURE_NAMES
+        else processed_df
+    )
 
     # Step 2: ML prediction
-    fraud_prob = float(model.predict_proba(processed_input)[0][1])
+    fraud_prob = float(model.predict_proba(model_input)[0][1])
 
     # Step 3: Anomaly detection
-    anomaly_raw = anomaly_model.decision_function(processed_input)[0]
+    anomaly_raw = anomaly_model.decision_function(anomaly_input)[0]
 
     # Normalize anomaly score
     anomaly_score = float(1 - anomaly_raw)

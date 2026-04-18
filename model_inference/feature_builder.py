@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import joblib
 from pathlib import Path
 
 from model_inference.graph_engine import compute_graph_features
@@ -10,9 +11,36 @@ from model_inference.graph_engine import compute_graph_features
 ROOT_DIR = Path(__file__).resolve().parents[1]
 
 DATA_PATH = ROOT_DIR / "model_preparation" / "outputs" / "datasets" / "ieee_dev_model_ready_train.csv"
+MODEL_PATH = ROOT_DIR / "model_training" / "artifacts" / "fraud_model_with_graph.pkl"
 
 df = pd.read_csv(DATA_PATH)
 FEATURE_COLUMNS = df.drop(columns=["isFraud"]).columns.tolist()
+
+
+def load_feature_columns():
+    columns = FEATURE_COLUMNS.copy()
+
+    if MODEL_PATH.exists():
+        model = joblib.load(MODEL_PATH)
+        model_feature_names = getattr(model, "feature_names_in_", None)
+        if model_feature_names is not None:
+            return [str(column) for column in model_feature_names]
+
+    for graph_column in ("user_degree", "device_degree"):
+        if graph_column not in columns:
+            columns.append(graph_column)
+
+    return columns
+
+
+MODEL_FEATURE_COLUMNS = load_feature_columns()
+
+
+def align_features(combined: dict, columns: list[str]):
+    final_features = {}
+    for column in columns:
+        final_features[column] = combined.get(column, 0)
+    return pd.DataFrame([final_features], columns=columns)
 
 
 # ==============================
@@ -63,9 +91,4 @@ def build_feature_vector(raw_input: dict):
     combined = {**raw_input, **engineered, **graph_features}
 
     # Step 4: align with training schema
-    final_features = {}
-
-    for col in FEATURE_COLUMNS:
-        final_features[col] = combined.get(col, 0)
-
-    return pd.DataFrame([final_features])
+    return align_features(combined, MODEL_FEATURE_COLUMNS)

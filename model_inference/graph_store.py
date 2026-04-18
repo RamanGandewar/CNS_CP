@@ -1,11 +1,21 @@
 import sqlite3
+import shutil
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-DB_PATH = ROOT_DIR / "model_inference" / "graph.db"
+LEGACY_DB_PATH = ROOT_DIR / "model_inference" / "graph.db"
+DB_DIR = ROOT_DIR / "Database" / "USERS"
+DB_PATH = DB_DIR / "fraudguard.db"
+
+
+def ensure_db_location():
+    DB_DIR.mkdir(parents=True, exist_ok=True)
+    if LEGACY_DB_PATH.exists() and not DB_PATH.exists():
+        shutil.copy2(LEGACY_DB_PATH, DB_PATH)
 
 
 def get_connection():
+    ensure_db_location()
     return sqlite3.connect(DB_PATH)
 
 
