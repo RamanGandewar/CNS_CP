@@ -1,5 +1,6 @@
 import sqlite3
 from random import choice, randint, uniform
+from urllib.parse import parse_qs
 from typing import Dict, Optional
 
 from fastapi import FastAPI, Header, HTTPException, WebSocket, WebSocketDisconnect
@@ -315,11 +316,23 @@ async def seed_demo_data(
 
 @app.websocket("/ws/dashboard")
 async def dashboard_updates(websocket: WebSocket):
+    query_params = parse_qs(websocket.scope.get("query_string", b"").decode("utf-8"))
+    token = query_params.get("token", [None])[0]
+    if not token:
+        await websocket.close(code=1008)
+        return
+
+    user = get_session_user(token)
+    if not user:
+        await websocket.close(code=1008)
+        return
+
     await manager.connect(websocket)
     try:
         await websocket.send_json(
             {
                 "type": "connected",
+                "user_id": user["id"],
                 "last_updated": get_latest_prediction_timestamp(),
             }
         )

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import GraphView from "../components/GraphView";
 import {
   createDashboardSocket,
@@ -244,6 +244,9 @@ export default function Dashboard({ user, onLogout, onSessionExpired }) {
   const [lastUpdated, setLastUpdated] = useState("");
   const [seedLoading, setSeedLoading] = useState(false);
   const [seedMessage, setSeedMessage] = useState("");
+  const mountedRef = useRef(false);
+  const socketRef = useRef(null);
+  const reconnectTimerRef = useRef(null);
 
   const navItems = [
     { key: "overview", label: "Overview", icon: "◦" },
@@ -297,8 +300,12 @@ export default function Dashboard({ user, onLogout, onSessionExpired }) {
   }
 
   useEffect(() => {
+    mountedRef.current = true;
     getHealth().then(() => setApiStatus("online")).catch(() => setApiStatus("offline"));
     loadCoreData();
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -306,12 +313,39 @@ export default function Dashboard({ user, onLogout, onSessionExpired }) {
   }, [riskFilter, deviceFilter]);
 
   useEffect(() => {
-    let reconnectTimerId = null;
-    let socket = null;
+    function clearReconnectTimer() {
+      if (reconnectTimerRef.current) {
+        window.clearTimeout(reconnectTimerRef.current);
+        reconnectTimerRef.current = null;
+      }
+    }
+
+    function closeSocket() {
+      if (socketRef.current) {
+        socketRef.current.onclose = null;
+        socketRef.current.close();
+        socketRef.current = null;
+      }
+    }
+
+    function scheduleReconnect() {
+      if (!mountedRef.current || reconnectTimerRef.current) {
+        return;
+      }
+      reconnectTimerRef.current = window.setTimeout(() => {
+        reconnectTimerRef.current = null;
+        connectSocket();
+      }, 3000);
+    }
 
     function connectSocket() {
-      socket = createDashboardSocket({
+      clearReconnectTimer();
+      closeSocket();
+
+      try {
+        socketRef.current = createDashboardSocket({
         onOpen: () => {
+          clearReconnectTimer();
           setApiStatus("online");
         },
         onMessage: async (message) => {
@@ -322,23 +356,25 @@ export default function Dashboard({ user, onLogout, onSessionExpired }) {
           }
         },
         onClose: () => {
+          if (!mountedRef.current) {
+            return;
+          }
           setApiStatus("offline");
-          reconnectTimerId = window.setTimeout(connectSocket, 3000);
+          scheduleReconnect();
         },
       });
+      } catch {
+        scheduleReconnect();
+      }
     }
 
     connectSocket();
 
     return () => {
-      if (reconnectTimerId) {
-        window.clearTimeout(reconnectTimerId);
-      }
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.close();
-      }
+      clearReconnectTimer();
+      closeSocket();
     };
-  }, [riskFilter, deviceFilter]);
+  }, []);
 
   async function handlePredictResult(result) {
     setPredictResult(result);

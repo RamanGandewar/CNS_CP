@@ -96,7 +96,12 @@ export async function seedDemoTransactions(count = 8) {
 }
 
 export function createDashboardSocket({ onMessage, onOpen, onClose }) {
-  const socket = new WebSocket(`${WS_BASE}/ws/dashboard`);
+  const token = getStoredToken();
+  if (!token) {
+    throw new Error("Missing session token");
+  }
+
+  const socket = new WebSocket(`${WS_BASE}/ws/dashboard?token=${encodeURIComponent(token)}`);
 
   socket.addEventListener("open", () => {
     if (onOpen) {

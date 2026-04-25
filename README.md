@@ -1,7 +1,3 @@
-<div align="center">
-
-<img src="images/USERFLOW.png" alt="FraudGuard Banner" width="100%" />
-
 # FraudGuard
 
 **Graph-Aware Fraud Detection Platform with Live Monitoring, Real-Time Updates, and Investigation-Ready Analytics**
@@ -335,4 +331,6 @@ Verify:
 
 ## Author
 
-Raman Gandewar
+* Raman Gandewar
+* Divij Gujarathi
+* Prathamesh Ghalsasi
