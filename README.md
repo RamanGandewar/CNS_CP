@@ -331,6 +331,12 @@ Verify:
 
 ## Author
 
+<<<<<<< HEAD
 * Raman Gandewar
 * Divij Gujarathi
 * Prathamesh Ghalsasi
+=======
+Raman Gandewar
+Divij Gujarathi
+Prathamesh Ghalsasi
+>>>>>>> d8ee8e43ca78720ff959843d57cbbdba38b9e5ab
